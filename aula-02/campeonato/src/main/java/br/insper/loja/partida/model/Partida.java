@@ -21,6 +21,7 @@ public class Partida {
     @ManyToOne
     @JoinColumn(name = "id_visitante")
     private Time visitante;
+
     private Integer placarMandante;
 
     private Integer placarVisitante;
