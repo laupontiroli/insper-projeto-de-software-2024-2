@@ -1,5 +1,6 @@
-package br.insper.aposta.aposta;
+package br.insper.aposta.aposta.reporitory;
 
+import br.insper.aposta.aposta.model.Aposta;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +10,5 @@ import java.util.List;
 public interface ApostaRepository extends MongoRepository<Aposta, String> {
 
     List<Aposta> findByResultado(String resultado);
+    List<Aposta> findByStatus(String status);
 }

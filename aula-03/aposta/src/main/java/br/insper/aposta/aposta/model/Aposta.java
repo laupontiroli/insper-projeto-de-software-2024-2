@@ -1,4 +1,4 @@
-package br.insper.aposta.aposta;
+package br.insper.aposta.aposta.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
