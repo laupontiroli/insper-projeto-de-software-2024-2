@@ -2,6 +2,7 @@ package br.insper.aposta.aposta;
 
 import br.insper.aposta.partida.PartidaNaoEncontradaException;
 import br.insper.aposta.partida.PartidaNaoRealizadaException;
+import br.insper.aposta.partida.PartidaService;
 import br.insper.aposta.partida.RetornarPartidaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -18,13 +20,13 @@ public class ApostaService {
     @Autowired
     private ApostaRepository apostaRepository;
 
+    @Autowired
+    private PartidaService partidaService;
+
     public Aposta salvar(Aposta aposta) {
         aposta.setId(UUID.randomUUID().toString());
 
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<RetornarPartidaDTO> partida = restTemplate.getForEntity(
-                "http://localhost:8080/partida/" + aposta.getIdPartida(),
-                RetornarPartidaDTO.class);
+        ResponseEntity<RetornarPartidaDTO> partida = partidaService.getPartida(aposta.getIdPartida());
 
         if (partida.getStatusCode().is2xxSuccessful())  {
             aposta.setStatus("REALIZADA");
@@ -43,20 +45,19 @@ public class ApostaService {
 
     public Aposta getAposta(String idAposta) {
 
-        Aposta aposta = apostaRepository.findById(idAposta).get();
+        Optional<Aposta> op = apostaRepository.findById(idAposta);
 
-        if (aposta == null) {
+        if (!op.isPresent()) {
             throw new ApostaNaoEncontradaException("Aposta não encontrada");
         }
+
+        Aposta aposta = op.get();
 
         if (!aposta.getStatus().equals("REALIZADA")) {
             return aposta;
         }
 
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<RetornarPartidaDTO> partida = restTemplate.getForEntity(
-                "http://localhost:8080/partida/" + aposta.getIdPartida(),
-                RetornarPartidaDTO.class);
+        ResponseEntity<RetornarPartidaDTO> partida = partidaService.getPartida(aposta.getIdPartida());
 
         if (partida.getStatusCode().is2xxSuccessful())  {
             RetornarPartidaDTO partidaDTO = partida.getBody();
