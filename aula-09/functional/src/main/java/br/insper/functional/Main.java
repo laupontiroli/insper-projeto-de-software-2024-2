@@ -24,6 +24,10 @@ public class Main {
 
             System.out.println(frasesComecamA);
 
+            Long count = frases.stream().filter(frase -> frase.startsWith("A")).count();
+
+            System.out.println(count);
+
             // Exemplo 2 - Filtrar apenas as frases que contenham a palavra rainha
             List<String> frasesRainha = new ArrayList<>();
             for (String frase : frases) {
@@ -31,6 +35,10 @@ public class Main {
                     frasesRainha.add(frase);
                 }
             }
+            System.out.println(frasesRainha);
+
+            frasesRainha = frases.stream().filter(frase -> frase.contains("rainha")).toList();
+
             System.out.println(frasesRainha);
 
             // Exemplo 3 - Converter a lista de frases em uma lista com a quantidade de caracteres de cada frase
@@ -44,7 +52,7 @@ public class Main {
                     .stream()
                     .map(x -> x.length())
                     .toList();
-        System.out.println(tamanho);
+            System.out.println(tamanho);
 
             // Exemplo 3 - Frase com maior número de palavras
             Integer fraseMaiorNumeroPalavras = 0;
@@ -55,6 +63,10 @@ public class Main {
                 }
             }
             System.out.println(fraseMaiorNumeroPalavras);
+
+            Integer maior = frases.stream().map(f ->f.length()).max((x,y) -> x.compareTo(y)).get();
+
+            System.out.println(maior);
 
             // Exemplo 4 - Contar total de digitos na frase
             Integer totalDigitos = 0;

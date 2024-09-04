@@ -1,5 +1,6 @@
 package br.insper.loja.time.service;
 
+import br.insper.loja.time.exception.TimeNaoEncontradoException;
 import br.insper.loja.time.model.Time;
 import br.insper.loja.time.repository.TimeRepository;
 import org.junit.jupiter.api.Assertions;
@@ -12,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class TimeServiceTests {
@@ -58,5 +60,28 @@ public class TimeServiceTests {
         Assertions.assertEquals("time-1", times.getFirst().getIdentificador());
     }
 
+    @Test
+    public void testGetTimesWhenTimeIsNotNull(){
+
+        Time time = timeService.getTime(1);
+
+        Mockito.when(timeRepository.findById(1)).thenReturn(Optional.of(time));
+        Time timeRetorno = timeService.getTime(1);
+
+        Assertions.assertNotNull(timeRetorno);
+        Assertions.assertEquals("SP",timeRetorno.getEstado());
+        Assertions.assertEquals("time-1",timeRetorno.getNome());
+
+    }
+
+    @Test
+    public void testGetTimesWhenTimeIsNull(){
+
+        Mockito.when(timeRepository.findById(1)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(TimeNaoEncontradoException.class,() -> timeService.getTime(1));
+
+        
+    }
 
 }

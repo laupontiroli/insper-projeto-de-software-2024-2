@@ -13,14 +13,19 @@ public class MusicaService {
 
     @Autowired
     private MusicaRepository musicaRepository;
-    public List<MusicaDTO> getAllMusicas() {
+    public List<MusicaDTO> getAllMusicas(String nome, String artista) {
         List<Musica> musicas = musicaRepository.findAll();
-        List<MusicaDTO> dtos = new ArrayList<>();
-        for (Musica musica : musicas) {
-            dtos.add(MusicaDTO.convert(musica));
+        //        for (Musica musica : musicas) {
+        //            dtos.add(MusicaDTO.convert(musica));
+        //        }
+        //        return dtos;
+        if (nome != null){
+            musicas.stream().map(musica -> musica.getNome().contains(nome)).toList();
         }
-        return dtos;
+        if (artista != null){
+            musicas.stream().map(musica -> musica.getArtista().contains(artista)).toList();
+        }
+        return musicas.stream().map(musica -> MusicaDTO.convert(musica)).toList();
     }
-
 
 }

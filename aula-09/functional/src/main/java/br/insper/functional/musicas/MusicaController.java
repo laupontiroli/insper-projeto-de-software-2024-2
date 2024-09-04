@@ -1,10 +1,7 @@
 package br.insper.functional.musicas;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -17,8 +14,9 @@ public class MusicaController {
     private MusicaService musicaService;
 
     @GetMapping
-    public List<MusicaDTO> getMusicas() {
-        return musicaService.getAllMusicas();
+    public List<MusicaDTO> getMusicas(@PathVariable(required = false) String nome,
+                                      @PathVariable(required = false) String artista) {
+        return musicaService.getAllMusicas(nome,artista);
     }
 
     // 1 - Refator o método getAllMusicas e adicionar filtros de artista e nome
