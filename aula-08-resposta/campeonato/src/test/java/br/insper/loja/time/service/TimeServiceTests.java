@@ -87,5 +87,24 @@ public class TimeServiceTests {
 
     }
 
+    @Test
+    public void testSaveTimeWhenDadosIsValid() {
+
+        Time time = new Time();
+        time.setNome("Nome");
+        time.setIdentificador("Nm");
+        Mockito.when(timeRepository.save(time)).thenReturn(time);
+
+        Assertions.assertEquals(timeService.cadastrarTime(time),time);
+    }
+
+    @Test
+    public void testSaveTimeWhenDadosIsNotValid() {
+
+        Time time = new Time();
+        time.setIdentificador("");
+        time.setNome("");
+        Assertions.assertThrows(RuntimeException.class,()->timeService.cadastrarTime(time));
+    }
 
 }
