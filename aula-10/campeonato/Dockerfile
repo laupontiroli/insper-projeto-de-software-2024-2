@@ -1,4 +1,4 @@
-FROM amazoncorretto:21
+FROM openjdk:21
 
 COPY target/loja-0.0.1-SNAPSHOT.jar /app.jar
 
