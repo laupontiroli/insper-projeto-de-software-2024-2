@@ -14,6 +14,9 @@ public class TabelaService {
     @Autowired
     private PartidaService partidaService;
 
+    @Autowired
+    private TabelaRepository tabelaRepository;
+
     public List<TabelaDTO> getTabela() {
 
         List<RetornarPartidaDTO> partidas = partidaService.getPartidas();
@@ -25,6 +28,16 @@ public class TabelaService {
                 processarTime(tabela, partida.getNomeMandante(), partida.getPlacarMandante(), partida.getPlacarVisitante());
                 processarTime(tabela, partida.getNomeVisitante(), partida.getPlacarVisitante(), partida.getPlacarMandante());
             }
+        }
+
+        tabelaRepository.deleteAll();
+        for (TabelaDTO tabelaDTO : tabela.values()) {
+            Tabela tab = new Tabela();
+            tab.setTime(tabelaDTO.getTime());
+            tab.setPontos(tabelaDTO.getPontos());
+            tab.setGolsContra(tabelaDTO.getGolsContra());
+            tab.setGolsPro(tabelaDTO.getGolsPro());
+            tabelaRepository.save(tab);
         }
 
         return new ArrayList<>(tabela.values()).stream()

@@ -1,15 +1,14 @@
 package br.insper.tabela.tabela;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class TabelaDTO {
+public class Tabela {
+    private String id;
     private String time;
     private Integer pontos;
     private Integer golsPro;
